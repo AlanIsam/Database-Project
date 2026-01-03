@@ -20,7 +20,7 @@
                 <a class="nav-link" href="/Database-Project/routes/payments/view.php">Payments</a>
                 <a class="nav-link" href="/Database-Project/routes/memberships/view.php">Memberships</a>
                 <a class="nav-link" href="/Database-Project/routes/trainerprogramhistory/view.php">Trainer History</a>
-                <a class="nav-link" href="/Database-Project/reports_new.php">Reports</a>
+                <a class="nav-link" href="/Database-Project/reports.php">Reports</a>
             </div>
         </div>
     </nav>

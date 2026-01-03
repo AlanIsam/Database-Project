@@ -13,126 +13,128 @@ $program = new Program();
 
 include 'views/header.php';
 ?>
+<h1>Reports</h1>
 
-// Member Stats
-$content .= '<h2>Member Statistics</h2>';
-$memberStats = $member->getMemberStats();
-$content .= '<table class="table table-striped">
+<!-- Member Statistics -->
+<h2>Member Statistics</h2>
+<?php $memberStats = $member->getMemberStats(); ?>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Member</th>
             <th>Programs Enrolled</th>
-            <th>Classes Attended</th>
+            <th>Classes Enrolled</th>
             <th>Total Payments</th>
             <th>Membership Status</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($memberStats as $stat) {
-    $content .= '<tr>
-        <td>' . $stat['first_name'] . ' ' . $stat['last_name'] . '</td>
-        <td>' . $stat['programs_enrolled'] . '</td>
-        <td>' . $stat['classes_attended'] . '</td>
-        <td>$' . $stat['total_payments'] . '</td>
-        <td>' . $stat['membership_status'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($memberStats as $stat): ?>
+        <tr>
+            <td><?php echo $stat['member_name']; ?></td>
+            <td><?php echo $stat['programs_enrolled']; ?></td>
+            <td><?php echo $stat['classes_enrolled']; ?></td>
+            <td>$<?php echo $stat['total_payments']; ?></td>
+            <td><?php echo $stat['membership_status']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-// Scheduled Classes
-$content .= '<h2>Scheduled Classes</h2>';
-$classes = $classModel->getAll();
-$content .= '<table class="table table-striped">
+<!-- Scheduled Classes -->
+<h2>Scheduled Classes</h2>
+<?php $classes = $classModel->getAll(); ?>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Program</th>
             <th>Trainer</th>
             <th>Category</th>
             <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-            <th>Capacity</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Room</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($classes as $c) {
-    $content .= '<tr>
-        <td>' . $c['program_name'] . '</td>
-        <td>' . $c['first_name'] . ' ' . $c['last_name'] . '</td>
-        <td>' . $c['category_name'] . '</td>
-        <td>' . $c['scheduled_date'] . '</td>
-        <td>' . $c['scheduled_time'] . '</td>
-        <td>' . $c['status'] . '</td>
-        <td>' . $c['capacity'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($classes as $c): ?>
+        <tr>
+            <td><?php echo $c['program_name']; ?></td>
+            <td><?php echo $c['trainer_name']; ?></td>
+            <td><?php echo $c['category_name']; ?></td>
+            <td><?php echo $c['class_date']; ?></td>
+            <td><?php echo $c['start_time']; ?></td>
+            <td><?php echo $c['end_time']; ?></td>
+            <td><?php echo $c['room_number']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-// Trainer Performance
-$content .= '<h2>Trainer Performance</h2>';
-$performances = $trainer->getPerformanceReport();
-$content .= '<table class="table table-striped">
+<!-- Trainer Performance -->
+<h2>Trainer Performance</h2>
+<?php $performances = $trainer->getPerformanceReport(); ?>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Trainer</th>
             <th>Total Classes Taught</th>
-            <th>Cancelled Classes</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($performances as $p) {
-    $content .= '<tr>
-        <td>' . $p['first_name'] . ' ' . $p['last_name'] . '</td>
-        <td>' . $p['total_classes'] . '</td>
-        <td>' . $p['cancelled_classes'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($performances as $p): ?>
+        <tr>
+            <td><?php echo $p['employee_name']; ?></td>
+            <td><?php echo $p['total_classes']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-// Membership Fees
-$content .= '<h2>Membership Fees</h2>';
-$content .= '<h3>Annual</h3>';
-$annualFees = $payment->getMembershipFees('annual');
-$content .= '<table class="table table-striped">
+<!-- Membership Fees -->
+<h2>Membership Fees</h2>
+<h3>Annual</h3>
+<?php $annualFees = $payment->getMembershipFees('annual'); ?>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Year</th>
             <th>Total Fees</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($annualFees as $f) {
-    $content .= '<tr>
-        <td>' . $f['YEAR(payment_date)'] . '</td>
-        <td>$' . $f['total_fees'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($annualFees as $f): ?>
+        <tr>
+            <td><?php echo $f['period']; ?></td>
+            <td>$<?php echo number_format($f['total_fees'], 2); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-$content .= '<h3>Quarterly</h3>';
-$quarterlyFees = $payment->getMembershipFees('quarterly');
-$content .= '<table class="table table-striped">
+<h3>Quarterly</h3>
+<?php $quarterlyFees = $payment->getMembershipFees('quarterly'); ?>
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Year</th>
-            <th>Quarter</th>
+            <th>Period</th>
             <th>Total Fees</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($quarterlyFees as $f) {
-    $content .= '<tr>
-        <td>' . $f['YEAR(payment_date)'] . '</td>
-        <td>' . $f['QUARTER(payment_date)'] . '</td>
-        <td>$' . $f['total_fees'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($quarterlyFees as $f): ?>
+        <tr>
+            <td><?php echo $f['period']; ?></td>
+            <td>$<?php echo number_format($f['total_fees'], 2); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-// Top 5 Programs
-$content .= '<h2>Top 5 Popular Programs</h2>';
-$topPrograms = $program->getTopPrograms();
-$content .= '<table class="table table-striped">
+<!-- Top 5 Programs -->
+<h2>Top 5 Popular Programs</h2>
+<?php $topPrograms = $program->getTopPrograms(); ?>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Program</th>
@@ -141,15 +143,16 @@ $content .= '<table class="table table-striped">
             <th>Enrolled Members</th>
         </tr>
     </thead>
-    <tbody>';
-foreach ($topPrograms as $tp) {
-    $content .= '<tr>
-        <td>' . $tp['name'] . '</td>
-        <td>' . $tp['category_name'] . '</td>
-        <td>' . $tp['first_name'] . ' ' . $tp['last_name'] . '</td>
-        <td>' . $tp['enrolled_members'] . '</td>
-    </tr>';
-}
-$content .= '</tbody></table>';
+    <tbody>
+        <?php foreach ($topPrograms as $tp): ?>
+        <tr>
+            <td><?php echo $tp['program_name']; ?></td>
+            <td><?php echo $tp['category_name']; ?></td>
+            <td><?php echo $tp['trainer_name']; ?></td>
+            <td><?php echo $tp['enrolled_members']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
 <?php include 'views/footer.php'; ?>

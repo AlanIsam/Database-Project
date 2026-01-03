@@ -2,22 +2,21 @@
 require_once '../../models/Enrollment.php';
 
 $enrollment = new Enrollment();
-$id = $_GET['id'];
+$class_id = $_GET['class_id'];
+$member_id = $_GET['member_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($enrollment->delete($id)) {
+    if ($enrollment->delete($class_id, $member_id)) {
         header('Location: view.php');
     } else {
         $error = 'Failed to delete enrollment.';
     }
 }
 
-$data = $enrollment->getById($id);
-
 include '../../views/header.php';
 ?>
 <h2>Delete Enrollment</h2>
-<p>Are you sure you want to delete the enrollment for <?php echo $data['first_name'] . ' ' . $data['last_name']; ?> in <?php echo $data['program_name']; ?>?</p>
+<p>Are you sure you want to delete this enrollment?</p>
 <?php if (isset($error)): ?>
 <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>

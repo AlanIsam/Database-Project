@@ -11,18 +11,20 @@ class Payment {
 
     public function getAll() {
         $stmt = $this->pdo->query("
-            SELECT p.*, m.first_name, m.last_name
-            FROM payments p
-            JOIN members m ON p.member_id = m.member_id
+            SELECT p.*, m.member_name, e.employee_name as cashier_name
+            FROM payment p
+            JOIN member m ON p.member_id = m.member_id
+            JOIN employee e ON p.employee_id = e.employee_id
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id) {
         $stmt = $this->pdo->prepare("
-            SELECT p.*, m.first_name, m.last_name
-            FROM payments p
-            JOIN members m ON p.member_id = m.member_id
+            SELECT p.*, m.member_name, e.employee_name as cashier_name
+            FROM payment p
+            JOIN member m ON p.member_id = m.member_id
+            JOIN employee e ON p.employee_id = e.employee_id
             WHERE p.payment_id = ?
         ");
         $stmt->execute([$id]);
@@ -30,17 +32,17 @@ class Payment {
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO payments (member_id, amount, payment_date, payment_type, description) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$data['member_id'], $data['amount'], $data['payment_date'], $data['payment_type'], $data['description']]);
+        $stmt = $this->pdo->prepare("INSERT INTO payment (payment_date, payment_amount, payment_method, member_id, employee_id) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$data['payment_date'], $data['payment_amount'], $data['payment_method'], $data['member_id'], $data['employee_id']]);
     }
 
     public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE payments SET member_id = ?, amount = ?, payment_date = ?, payment_type = ?, description = ? WHERE payment_id = ?");
-        return $stmt->execute([$data['member_id'], $data['amount'], $data['payment_date'], $data['payment_type'], $data['description'], $id]);
+        $stmt = $this->pdo->prepare("UPDATE payment SET payment_date = ?, payment_amount = ?, payment_method = ?, member_id = ?, employee_id = ? WHERE payment_id = ?");
+        return $stmt->execute([$data['payment_date'], $data['payment_amount'], $data['payment_method'], $data['member_id'], $data['employee_id'], $id]);
     }
 
     public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM payments WHERE payment_id = ?");
+        $stmt = $this->pdo->prepare("DELETE FROM payment WHERE payment_id = ?");
         return $stmt->execute([$id]);
     }
 
@@ -51,14 +53,12 @@ class Payment {
         } else {
             $group = "YEAR(payment_date)";
         }
-        $stmt = $this->pdo->prepare("
-            SELECT $group, SUM(amount) as total_fees
-            FROM payments
-            WHERE payment_type = 'membership'
-            GROUP BY $group
-            ORDER BY $group DESC
+        $stmt = $this->pdo->query("
+            SELECT {$group} as period, SUM(payment_amount) as total_fees
+            FROM payment
+            GROUP BY {$group}
+            ORDER BY period
         ");
-        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

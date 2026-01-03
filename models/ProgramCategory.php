@@ -10,28 +10,28 @@ class ProgramCategory {
     }
 
     public function getAll() {
-        $stmt = $this->pdo->query("SELECT * FROM program_categories");
+        $stmt = $this->pdo->query("SELECT * FROM program_category");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM program_categories WHERE category_id = ?");
+        $stmt = $this->pdo->prepare("SELECT * FROM program_category WHERE category_id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO program_categories (name, description) VALUES (?, ?)");
-        return $stmt->execute([$data['name'], $data['description']]);
+        $stmt = $this->pdo->prepare("INSERT INTO program_category (category_name) VALUES (?)");
+        return $stmt->execute([$data['category_name']]);
     }
 
     public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE program_categories SET name = ?, description = ? WHERE category_id = ?");
-        return $stmt->execute([$data['name'], $data['description'], $id]);
+        $stmt = $this->pdo->prepare("UPDATE program_category SET category_name = ? WHERE category_id = ?");
+        return $stmt->execute([$data['category_name'], $id]);
     }
 
     public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM program_categories WHERE category_id = ?");
+        $stmt = $this->pdo->prepare("DELETE FROM program_category WHERE category_id = ?");
         return $stmt->execute([$id]);
     }
 }

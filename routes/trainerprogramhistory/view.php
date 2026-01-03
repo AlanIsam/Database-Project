@@ -13,7 +13,7 @@ include '../../views/header.php';
             <th>ID</th>
             <th>Trainer</th>
             <th>Category</th>
-            <th>Assigned Date</th>
+            <th>Start Date</th>
             <th>End Date</th>
             <th>Actions</th>
         </tr>
@@ -22,10 +22,10 @@ include '../../views/header.php';
         <?php foreach ($histories as $h): ?>
         <tr>
             <td><?php echo $h['history_id']; ?></td>
-            <td><?php echo $h['first_name'] . ' ' . $h['last_name']; ?></td>
+            <td><?php echo $h['employee_name']; ?></td>
             <td><?php echo $h['category_name']; ?></td>
-            <td><?php echo $h['assigned_date']; ?></td>
-            <td><?php echo $h['end_date']; ?></td>
+            <td><?php echo $h['start_date']; ?></td>
+            <td><?php echo $h['end_date'] ?? 'Current'; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $h['history_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $h['history_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

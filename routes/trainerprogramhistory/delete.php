@@ -17,7 +17,7 @@ $data = $history->getById($id);
 include '../../views/header.php';
 ?>
 <h2>Delete Trainer Program History</h2>
-<p>Are you sure you want to delete the history for <?php echo $data['first_name'] . ' ' . $data['last_name']; ?> in <?php echo $data['category_name']; ?>?</p>
+<p>Are you sure you want to delete the history for <?php echo $data['employee_name']; ?> in <?php echo $data['category_name']; ?>?</p>
 <?php if (isset($error)): ?>
 <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>

@@ -1,7 +1,7 @@
 <?php
 // Database configuration
 $host = 'localhost';
-$dbname = 'wellness_center';
+$dbname = 'fitlife_wellness';
 $username = 'root'; // Default XAMPP username
 $password = ''; // Default XAMPP password
 

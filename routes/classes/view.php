@@ -15,9 +15,9 @@ include '../../views/header.php';
             <th>Trainer</th>
             <th>Category</th>
             <th>Date</th>
-            <th>Time</th>
-            <th>Status</th>
-            <th>Capacity</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Room</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -26,12 +26,12 @@ include '../../views/header.php';
         <tr>
             <td><?php echo $c['class_id']; ?></td>
             <td><?php echo $c['program_name']; ?></td>
-            <td><?php echo $c['first_name'] . ' ' . $c['last_name']; ?></td>
+            <td><?php echo $c['trainer_name']; ?></td>
             <td><?php echo $c['category_name']; ?></td>
-            <td><?php echo $c['scheduled_date']; ?></td>
-            <td><?php echo $c['scheduled_time']; ?></td>
-            <td><?php echo $c['status']; ?></td>
-            <td><?php echo $c['capacity']; ?></td>
+            <td><?php echo $c['class_date']; ?></td>
+            <td><?php echo $c['start_time']; ?></td>
+            <td><?php echo $c['end_time']; ?></td>
+            <td><?php echo $c['room_number']; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $c['class_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $c['class_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

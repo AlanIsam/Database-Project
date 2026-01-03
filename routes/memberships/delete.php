@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($membership->delete($id)) {
         header('Location: view.php');
     } else {
-        $error = 'Failed to delete membership.';
+        $error = 'Failed to delete membership type.';
     }
 }
 
@@ -16,8 +16,8 @@ $data = $membership->getById($id);
 
 include '../../views/header.php';
 ?>
-<h2>Delete Membership</h2>
-<p>Are you sure you want to delete the membership for <?php echo $data['first_name'] . ' ' . $data['last_name']; ?>?</p>
+<h2>Delete Membership Type</h2>
+<p>Are you sure you want to delete the membership type "<?php echo $data['type_name']; ?>" ($<?php echo number_format($data['monthly_fee'], 2); ?>/month)?</p>
 <?php if (isset($error)): ?>
 <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>

@@ -17,7 +17,7 @@ $data = $category->getById($id);
 include '../../views/header.php';
 ?>
 <h2>Delete Program Category</h2>
-<p>Are you sure you want to delete <?php echo $data['name']; ?>?</p>
+<p>Are you sure you want to delete the category "<?php echo $data['category_name']; ?>"?</p>
 <?php if (isset($error)): ?>
 <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>

@@ -12,10 +12,10 @@ include '../../views/header.php';
         <tr>
             <th>ID</th>
             <th>Member</th>
+            <th>Cashier</th>
             <th>Amount</th>
             <th>Payment Date</th>
-            <th>Type</th>
-            <th>Description</th>
+            <th>Method</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -23,11 +23,11 @@ include '../../views/header.php';
         <?php foreach ($payments as $p): ?>
         <tr>
             <td><?php echo $p['payment_id']; ?></td>
-            <td><?php echo $p['first_name'] . ' ' . $p['last_name']; ?></td>
-            <td><?php echo $p['amount']; ?></td>
+            <td><?php echo $p['member_name']; ?></td>
+            <td><?php echo $p['cashier_name']; ?></td>
+            <td><?php echo $p['payment_amount']; ?></td>
             <td><?php echo $p['payment_date']; ?></td>
-            <td><?php echo $p['payment_type']; ?></td>
-            <td><?php echo $p['description']; ?></td>
+            <td><?php echo $p['payment_method']; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $p['payment_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $p['payment_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

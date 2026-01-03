@@ -7,8 +7,7 @@ $data = $category->getById($id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updateData = [
-        'name' => $_POST['name'],
-        'description' => $_POST['description']
+        'category_name' => $_POST['category_name']
     ];
     if ($category->update($id, $updateData)) {
         header('Location: view.php');
@@ -25,12 +24,8 @@ include '../../views/header.php';
 <?php endif; ?>
 <form method="post">
     <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?php echo $data['name']; ?>" required>
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description"><?php echo $data['description']; ?></textarea>
+        <label for="category_name" class="form-label">Category Name</label>
+        <input type="text" class="form-control" id="category_name" name="category_name" value="<?php echo $data['category_name']; ?>" required>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
     <a href="view.php" class="btn btn-secondary">Cancel</a>

@@ -11,9 +11,9 @@ $categories = $categoryModel->getAll();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $history = new TrainerProgramHistory();
     $data = [
-        'trainer_id' => $_POST['trainer_id'],
+        'employee_id' => $_POST['employee_id'],
         'category_id' => $_POST['category_id'],
-        'assigned_date' => $_POST['assigned_date'],
+        'start_date' => $_POST['start_date'],
         'end_date' => $_POST['end_date']
     ];
     if ($history->create($data)) {
@@ -31,11 +31,11 @@ include '../../views/header.php';
 <?php endif; ?>
 <form method="post">
     <div class="mb-3">
-        <label for="trainer_id" class="form-label">Trainer</label>
-        <select class="form-control" id="trainer_id" name="trainer_id" required>
+        <label for="employee_id" class="form-label">Trainer</label>
+        <select class="form-control" id="employee_id" name="employee_id" required>
             <option value="">Select Trainer</option>
             <?php foreach ($trainers as $t): ?>
-            <option value="<?php echo $t['trainer_id']; ?>"><?php echo $t['first_name'] . ' ' . $t['last_name']; ?></option>
+            <option value="<?php echo $t['employee_id']; ?>"><?php echo $t['employee_name']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -44,13 +44,13 @@ include '../../views/header.php';
         <select class="form-control" id="category_id" name="category_id" required>
             <option value="">Select Category</option>
             <?php foreach ($categories as $c): ?>
-            <option value="<?php echo $c['category_id']; ?>"><?php echo $c['name']; ?></option>
+            <option value="<?php echo $c['category_id']; ?>"><?php echo $c['category_name']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>
     <div class="mb-3">
-        <label for="assigned_date" class="form-label">Assigned Date</label>
-        <input type="date" class="form-control" id="assigned_date" name="assigned_date" required>
+        <label for="start_date" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" required>
     </div>
     <div class="mb-3">
         <label for="end_date" class="form-label">End Date</label>

@@ -1,18 +1,22 @@
 <?php
 require_once '../../models/Member.php';
+require_once '../../models/Membership.php';
 
 $member = new Member();
+$membership = new Membership();
 $id = $_GET['id'];
 $data = $member->getById($id);
+$types = $membership->getAll();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updateData = [
-        'first_name' => $_POST['first_name'],
-        'last_name' => $_POST['last_name'],
-        'email' => $_POST['email'],
-        'phone' => $_POST['phone'],
-        'join_date' => $_POST['join_date'],
-        'membership_status' => $_POST['membership_status']
+        'member_name' => $_POST['member_name'],
+        'member_ic' => $_POST['member_ic'],
+        'member_contact' => $_POST['member_contact'],
+        'gender' => $_POST['gender'],
+        'date_of_birth' => $_POST['date_of_birth'],
+        'membership_status' => $_POST['membership_status'],
+        'type_id' => $_POST['type_id']
     ];
     if ($member->update($id, $updateData)) {
         header('Location: view.php');
@@ -29,30 +33,41 @@ include '../../views/header.php';
 <?php endif; ?>
 <form method="post">
     <div class="mb-3">
-        <label for="first_name" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo $data['first_name']; ?>" required>
+        <label for="member_name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="member_name" name="member_name" value="<?php echo $data['member_name']; ?>" required>
     </div>
     <div class="mb-3">
-        <label for="last_name" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $data['last_name']; ?>" required>
+        <label for="member_ic" class="form-label">IC Number</label>
+        <input type="text" class="form-control" id="member_ic" name="member_ic" value="<?php echo $data['member_ic']; ?>" required>
     </div>
     <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" value="<?php echo $data['email']; ?>" required>
+        <label for="member_contact" class="form-label">Contact</label>
+        <input type="text" class="form-control" id="member_contact" name="member_contact" value="<?php echo $data['member_contact']; ?>">
     </div>
     <div class="mb-3">
-        <label for="phone" class="form-label">Phone</label>
-        <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $data['phone']; ?>">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-control" id="gender" name="gender">
+            <option value="Male" <?php echo ($data['gender'] == 'Male' ? 'selected' : ''); ?>>Male</option>
+            <option value="Female" <?php echo ($data['gender'] == 'Female' ? 'selected' : ''); ?>>Female</option>
+        </select>
     </div>
     <div class="mb-3">
-        <label for="join_date" class="form-label">Join Date</label>
-        <input type="date" class="form-control" id="join_date" name="join_date" value="<?php echo $data['join_date']; ?>" required>
+        <label for="date_of_birth" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="<?php echo $data['date_of_birth']; ?>">
     </div>
     <div class="mb-3">
         <label for="membership_status" class="form-label">Membership Status</label>
         <select class="form-control" id="membership_status" name="membership_status">
-            <option value="active" <?php echo ($data['membership_status'] == 'active' ? 'selected' : ''); ?>>Active</option>
-            <option value="inactive" <?php echo ($data['membership_status'] == 'inactive' ? 'selected' : ''); ?>>Inactive</option>
+            <option value="Active" <?php echo ($data['membership_status'] == 'Active' ? 'selected' : ''); ?>>Active</option>
+            <option value="Inactive" <?php echo ($data['membership_status'] == 'Inactive' ? 'selected' : ''); ?>>Inactive</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="type_id" class="form-label">Membership Type</label>
+        <select class="form-control" id="type_id" name="type_id" required>
+            <?php foreach ($types as $type): ?>
+            <option value="<?php echo $type['type_id']; ?>" <?php echo ($data['type_id'] == $type['type_id'] ? 'selected' : ''); ?>><?php echo $type['type_name']; ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>

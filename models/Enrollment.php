@@ -11,41 +11,35 @@ class Enrollment {
 
     public function getAll() {
         $stmt = $this->pdo->query("
-            SELECT e.*, m.first_name, m.last_name, c.scheduled_date, c.scheduled_time, p.name as program_name
-            FROM enrollments e
-            JOIN members m ON e.member_id = m.member_id
-            JOIN classes c ON e.class_id = c.class_id
-            JOIN programs p ON c.program_id = p.program_id
+            SELECT cm.*, m.member_name, c.class_date, c.start_time, c.end_time, p.program_name
+            FROM class_member cm
+            JOIN member m ON cm.member_id = m.member_id
+            JOIN class c ON cm.class_id = c.class_id
+            JOIN program p ON c.program_id = p.program_id
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getById($id) {
+    public function getByMember($member_id) {
         $stmt = $this->pdo->prepare("
-            SELECT e.*, m.first_name, m.last_name, c.scheduled_date, c.scheduled_time, p.name as program_name
-            FROM enrollments e
-            JOIN members m ON e.member_id = m.member_id
-            JOIN classes c ON e.class_id = c.class_id
-            JOIN programs p ON c.program_id = p.program_id
-            WHERE e.enrollment_id = ?
+            SELECT cm.*, c.class_date, c.start_time, c.end_time, p.program_name
+            FROM class_member cm
+            JOIN class c ON cm.class_id = c.class_id
+            JOIN program p ON c.program_id = p.program_id
+            WHERE cm.member_id = ?
         ");
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute([$member_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO enrollments (member_id, class_id, enrollment_date, status) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$data['member_id'], $data['class_id'], $data['enrollment_date'], $data['status']]);
+        $stmt = $this->pdo->prepare("INSERT INTO class_member (class_id, member_id) VALUES (?, ?)");
+        return $stmt->execute([$data['class_id'], $data['member_id']]);
     }
 
-    public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE enrollments SET member_id = ?, class_id = ?, enrollment_date = ?, status = ? WHERE enrollment_id = ?");
-        return $stmt->execute([$data['member_id'], $data['class_id'], $data['enrollment_date'], $data['status'], $id]);
-    }
-
-    public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM enrollments WHERE enrollment_id = ?");
-        return $stmt->execute([$id]);
+    public function delete($class_id, $member_id) {
+        $stmt = $this->pdo->prepare("DELETE FROM class_member WHERE class_id = ? AND member_id = ?");
+        return $stmt->execute([$class_id, $member_id]);
     }
 }
 ?>

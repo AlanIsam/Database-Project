@@ -12,10 +12,12 @@ include '../../views/header.php';
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Join Date</th>
-            <th>Status</th>
+            <th>IC</th>
+            <th>Contact</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Membership Status</th>
+            <th>Membership Type</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -23,11 +25,13 @@ include '../../views/header.php';
         <?php foreach ($members as $m): ?>
         <tr>
             <td><?php echo $m['member_id']; ?></td>
-            <td><?php echo $m['first_name'] . ' ' . $m['last_name']; ?></td>
-            <td><?php echo $m['email']; ?></td>
-            <td><?php echo $m['phone']; ?></td>
-            <td><?php echo $m['join_date']; ?></td>
+            <td><?php echo $m['member_name']; ?></td>
+            <td><?php echo $m['member_ic']; ?></td>
+            <td><?php echo $m['member_contact']; ?></td>
+            <td><?php echo $m['gender']; ?></td>
+            <td><?php echo $m['date_of_birth']; ?></td>
             <td><?php echo $m['membership_status']; ?></td>
+            <td><?php echo $m['type_name']; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $m['member_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $m['member_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

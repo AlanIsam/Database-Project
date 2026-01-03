@@ -12,7 +12,6 @@ include '../../views/header.php';
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -20,8 +19,7 @@ include '../../views/header.php';
         <?php foreach ($categories as $c): ?>
         <tr>
             <td><?php echo $c['category_id']; ?></td>
-            <td><?php echo $c['name']; ?></td>
-            <td><?php echo $c['description']; ?></td>
+            <td><?php echo $c['category_name']; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $c['category_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $c['category_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

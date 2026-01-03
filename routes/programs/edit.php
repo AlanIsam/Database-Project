@@ -1,20 +1,23 @@
 <?php
 require_once '../../models/Program.php';
 require_once '../../models/ProgramCategory.php';
+require_once '../../models/Trainer.php';
 
 $program = new Program();
 $categoryModel = new ProgramCategory();
 $categories = $categoryModel->getAll();
+$trainerModel = new Trainer();
+$trainers = $trainerModel->getAll();
 $id = $_GET['id'];
 $data = $program->getById($id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updateData = [
-        'name' => $_POST['name'],
-        'category_id' => $_POST['category_id'],
-        'description' => $_POST['description'],
-        'duration_weeks' => $_POST['duration_weeks'],
-        'fee' => $_POST['fee']
+        'program_name' => $_POST['program_name'],
+        'program_duration' => $_POST['program_duration'],
+        'program_fee' => $_POST['program_fee'],
+        'employee_id' => $_POST['employee_id'],
+        'category_id' => $_POST['category_id']
     ];
     if ($program->update($id, $updateData)) {
         header('Location: view.php');
@@ -31,29 +34,34 @@ include '../../views/header.php';
 <?php endif; ?>
 <form method="post">
     <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="<?php echo $data['name']; ?>" required>
+        <label for="program_name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="program_name" name="program_name" value="<?php echo $data['program_name']; ?>" required>
     </div>
     <div class="mb-3">
         <label for="category_id" class="form-label">Category</label>
-        <select class="form-control" id="category_id" name="category_id" required>
+        <select class="form-control" id="category_id" name="category_id">
             <option value="">Select Category</option>
             <?php foreach ($categories as $c): ?>
-            <option value="<?php echo $c['category_id']; ?>" <?php echo ($c['category_id'] == $data['category_id']) ? 'selected' : ''; ?>><?php echo $c['name']; ?></option>
+            <option value="<?php echo $c['category_id']; ?>" <?php echo ($c['category_id'] == $data['category_id']) ? 'selected' : ''; ?>><?php echo $c['category_name']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>
     <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description"><?php echo $data['description']; ?></textarea>
+        <label for="employee_id" class="form-label">Trainer</label>
+        <select class="form-control" id="employee_id" name="employee_id" required>
+            <option value="">Select Trainer</option>
+            <?php foreach ($trainers as $t): ?>
+            <option value="<?php echo $t['employee_id']; ?>" <?php echo ($t['employee_id'] == $data['employee_id']) ? 'selected' : ''; ?>><?php echo $t['employee_name']; ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <div class="mb-3">
-        <label for="duration_weeks" class="form-label">Duration (Weeks)</label>
-        <input type="number" class="form-control" id="duration_weeks" name="duration_weeks" value="<?php echo $data['duration_weeks']; ?>">
+        <label for="program_duration" class="form-label">Duration</label>
+        <input type="text" class="form-control" id="program_duration" name="program_duration" value="<?php echo $data['program_duration']; ?>">
     </div>
     <div class="mb-3">
-        <label for="fee" class="form-label">Fee</label>
-        <input type="number" step="0.01" class="form-control" id="fee" name="fee" value="<?php echo $data['fee']; ?>">
+        <label for="program_fee" class="form-label">Fee</label>
+        <input type="number" step="0.01" class="form-control" id="program_fee" name="program_fee" value="<?php echo $data['program_fee']; ?>">
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
     <a href="view.php" class="btn btn-secondary">Cancel</a>

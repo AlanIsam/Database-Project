@@ -13,8 +13,8 @@ include '../../views/header.php';
             <th>ID</th>
             <th>Name</th>
             <th>Category</th>
-            <th>Description</th>
-            <th>Duration (Weeks)</th>
+            <th>Trainer</th>
+            <th>Duration</th>
             <th>Fee</th>
             <th>Actions</th>
         </tr>
@@ -23,11 +23,11 @@ include '../../views/header.php';
         <?php foreach ($programs as $p): ?>
         <tr>
             <td><?php echo $p['program_id']; ?></td>
-            <td><?php echo $p['name']; ?></td>
+            <td><?php echo $p['program_name']; ?></td>
             <td><?php echo $p['category_name']; ?></td>
-            <td><?php echo $p['description']; ?></td>
-            <td><?php echo $p['duration_weeks']; ?></td>
-            <td><?php echo $p['fee']; ?></td>
+            <td><?php echo $p['trainer_name']; ?></td>
+            <td><?php echo $p['program_duration']; ?></td>
+            <td><?php echo $p['program_fee']; ?></td>
             <td>
                 <a href="edit.php?id=<?php echo $p['program_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="delete.php?id=<?php echo $p['program_id']; ?>" class="btn btn-danger btn-sm">Delete</a>

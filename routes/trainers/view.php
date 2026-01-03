@@ -12,23 +12,25 @@ include '../../views/header.php';
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Hire Date</th>
+            <th>IC</th>
+            <th>Contact</th>
+            <th>Expertise</th>
+            <th>Salary</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($trainers as $t): ?>
         <tr>
-            <td><?php echo $t['trainer_id']; ?></td>
-            <td><?php echo $t['first_name'] . ' ' . $t['last_name']; ?></td>
-            <td><?php echo $t['email']; ?></td>
-            <td><?php echo $t['phone']; ?></td>
-            <td><?php echo $t['hire_date']; ?></td>
+            <td><?php echo $t['employee_id']; ?></td>
+            <td><?php echo $t['employee_name']; ?></td>
+            <td><?php echo $t['employee_ic']; ?></td>
+            <td><?php echo $t['employee_contact']; ?></td>
+            <td><?php echo $t['expertise']; ?></td>
+            <td><?php echo $t['employee_salary']; ?></td>
             <td>
-                <a href="edit.php?id=<?php echo $t['trainer_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                <a href="delete.php?id=<?php echo $t['trainer_id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                <a href="edit.php?id=<?php echo $t['employee_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                <a href="delete.php?id=<?php echo $t['employee_id']; ?>" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         <?php endforeach; ?>

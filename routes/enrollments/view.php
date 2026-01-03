@@ -10,27 +10,22 @@ include '../../views/header.php';
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Member</th>
-            <th>Class</th>
+            <th>Class Date</th>
+            <th>Class Time</th>
             <th>Program</th>
-            <th>Enrollment Date</th>
-            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($enrollments as $e): ?>
         <tr>
-            <td><?php echo $e['enrollment_id']; ?></td>
-            <td><?php echo $e['first_name'] . ' ' . $e['last_name']; ?></td>
-            <td><?php echo $e['scheduled_date'] . ' ' . $e['scheduled_time']; ?></td>
+            <td><?php echo $e['member_name']; ?></td>
+            <td><?php echo $e['class_date']; ?></td>
+            <td><?php echo $e['start_time'] . ' - ' . $e['end_time']; ?></td>
             <td><?php echo $e['program_name']; ?></td>
-            <td><?php echo $e['enrollment_date']; ?></td>
-            <td><?php echo $e['status']; ?></td>
             <td>
-                <a href="edit.php?id=<?php echo $e['enrollment_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                <a href="delete.php?id=<?php echo $e['enrollment_id']; ?>" class="btn btn-danger btn-sm">Delete</a>
+                <a href="delete.php?class_id=<?php echo $e['class_id']; ?>&member_id=<?php echo $e['member_id']; ?>" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         <?php endforeach; ?>
