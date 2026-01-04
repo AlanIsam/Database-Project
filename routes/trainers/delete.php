@@ -16,7 +16,7 @@ $data = $trainer->getById($id);
 
 $content = '
 <h2>Delete Trainer</h2>
-<p>Are you sure you want to delete ' . $data['first_name'] . ' ' . $data['last_name'] . '?</p>
+<p>Are you sure you want to delete ' . $data['employee_name'] . '?</p>
 ' . (isset($error) ? '<div class="alert alert-danger">' . $error . '</div>' : '') . '
 <form method="post">
     <button type="submit" class="btn btn-danger">Delete</button>
