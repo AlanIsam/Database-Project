@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Program {
-    private $pdo;
+    public $pdo;
 
     public function __construct() {
         global $pdo;
@@ -21,11 +21,17 @@ class Program {
     }
 
     public function create($data) {
+        if (!$this->trainerExists($data['employee_id'])) {
+            return false; // avoid FK violation when selecting non-trainer
+        }
         $stmt = $this->pdo->prepare("INSERT INTO program (program_name, program_duration, program_fee, employee_id, category_id) VALUES (?, ?, ?, ?, ?)");
         return $stmt->execute([$data['program_name'], $data['program_duration'], $data['program_fee'], $data['employee_id'], $data['category_id']]);
     }
 
     public function update($id, $data) {
+        if (!$this->trainerExists($data['employee_id'])) {
+            return false;
+        }
         $stmt = $this->pdo->prepare("UPDATE program SET program_name = ?, program_duration = ?, program_fee = ?, employee_id = ?, category_id = ? WHERE program_id = ?");
         return $stmt->execute([$data['program_name'], $data['program_duration'], $data['program_fee'], $data['employee_id'], $data['category_id'], $id]);
     }
@@ -49,6 +55,12 @@ class Program {
             LIMIT 5
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function trainerExists($employeeId) {
+        $stmt = $this->pdo->prepare("SELECT 1 FROM trainer WHERE employee_id = ?");
+        $stmt->execute([$employeeId]);
+        return (bool) $stmt->fetchColumn();
     }
 }
 ?>

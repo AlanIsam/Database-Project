@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 class ProgramCategory {
-    private $pdo;
+    public $pdo;
 
     public function __construct() {
         global $pdo;

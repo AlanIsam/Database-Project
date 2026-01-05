@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
-class ClassModel {
-    private $pdo;
+class ClassModel{
+    public $pdo;
 
     public function __construct() {
         global $pdo;
@@ -34,11 +34,17 @@ class ClassModel {
     }
 
     public function create($data) {
+        if (!$this->trainerExists($data['employee_id'])) {
+            return false; // avoid FK violation when non-trainer is selected
+        }
         $stmt = $this->pdo->prepare("INSERT INTO class (class_date, start_time, end_time, room_number, program_id, employee_id) VALUES (?, ?, ?, ?, ?, ?)");
         return $stmt->execute([$data['class_date'], $data['start_time'], $data['end_time'], $data['room_number'], $data['program_id'], $data['employee_id']]);
     }
 
     public function update($id, $data) {
+        if (!$this->trainerExists($data['employee_id'])) {
+            return false;
+        }
         $stmt = $this->pdo->prepare("UPDATE class SET class_date = ?, start_time = ?, end_time = ?, room_number = ?, program_id = ?, employee_id = ? WHERE class_id = ?");
         return $stmt->execute([$data['class_date'], $data['start_time'], $data['end_time'], $data['room_number'], $data['program_id'], $data['employee_id'], $id]);
     }
@@ -46,6 +52,12 @@ class ClassModel {
     public function delete($id) {
         $stmt = $this->pdo->prepare("DELETE FROM class WHERE class_id = ?");
         return $stmt->execute([$id]);
+    }
+
+    private function trainerExists($employeeId) {
+        $stmt = $this->pdo->prepare("SELECT 1 FROM trainer WHERE employee_id = ?");
+        $stmt->execute([$employeeId]);
+        return (bool) $stmt->fetchColumn();
     }
 }
 ?>

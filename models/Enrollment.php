@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Enrollment {
-    private $pdo;
+    public $pdo;
 
     public function __construct() {
         global $pdo;
@@ -20,6 +20,19 @@ class Enrollment {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getOne($class_id, $member_id) {
+        $stmt = $this->pdo->prepare("
+            SELECT cm.*, m.member_name, c.class_date, c.start_time, c.end_time, p.program_name
+            FROM class_member cm
+            JOIN member m ON cm.member_id = m.member_id
+            JOIN class c ON cm.class_id = c.class_id
+            JOIN program p ON c.program_id = p.program_id
+            WHERE cm.class_id = ? AND cm.member_id = ?
+        ");
+        $stmt->execute([$class_id, $member_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getByMember($member_id) {
         $stmt = $this->pdo->prepare("
             SELECT cm.*, c.class_date, c.start_time, c.end_time, p.program_name
@@ -35,6 +48,11 @@ class Enrollment {
     public function create($data) {
         $stmt = $this->pdo->prepare("INSERT INTO class_member (class_id, member_id) VALUES (?, ?)");
         return $stmt->execute([$data['class_id'], $data['member_id']]);
+    }
+
+    public function update($oldClassId, $oldMemberId, $data) {
+        $stmt = $this->pdo->prepare("UPDATE class_member SET class_id = ?, member_id = ? WHERE class_id = ? AND member_id = ?");
+        return $stmt->execute([$data['class_id'], $data['member_id'], $oldClassId, $oldMemberId]);
     }
 
     public function delete($class_id, $member_id) {
