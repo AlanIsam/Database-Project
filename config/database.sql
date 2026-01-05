@@ -154,8 +154,8 @@ INSERT INTO `class_member` (`class_id`, `member_id`) VALUES
 CREATE TABLE `employee` (
   `employee_id` int(11) NOT NULL,
   `employee_name` varchar(100) NOT NULL,
-  `employee_ic` varchar(20) NOT NULL,
-  `employee_contact` varchar(30) NOT NULL,
+  `employee_ic` VARCHAR(12) NOT NULL,
+  `employee_contact` VARCHAR(20) NOT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `date_working` date DEFAULT NULL,
@@ -188,8 +188,8 @@ INSERT INTO `employee` (`employee_id`, `employee_name`, `employee_ic`, `employee
 CREATE TABLE `member` (
   `member_id` int(11) NOT NULL,
   `member_name` varchar(100) NOT NULL,
-  `member_ic` varchar(20) NOT NULL,
-  `member_contact` varchar(30) NOT NULL,
+  `member_ic` VARCHAR(12) NOT NULL,
+  `member_contact` VARCHAR(20) NOT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `membership_status` varchar(20) DEFAULT NULL,

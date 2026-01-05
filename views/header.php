@@ -12,7 +12,7 @@
             <a class="navbar-brand" href="/Database-Project/index.php">Wellness Center</a>
             <div class="navbar-nav">
                 <a class="nav-link" href="/Database-Project/routes/members/view.php">Members</a>
-                <a class="nav-link" href="/Database-Project/routes/trainers/view.php">Trainers</a>
+                <a class="nav-link" href="/Database-Project/routes/employees/view.php">Employees</a>
                 <a class="nav-link" href="/Database-Project/routes/programcategories/view.php">Categories</a>
                 <a class="nav-link" href="/Database-Project/routes/programs/view.php">Programs</a>
                 <a class="nav-link" href="/Database-Project/routes/classes/view.php">Classes</a>

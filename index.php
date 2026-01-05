@@ -2,7 +2,7 @@
         <h1>Welcome to Wellness Center Management System</h1>
         <p>Use the navigation above to manage the database.</p>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Members</h5>
@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Programs</h5>
@@ -20,12 +20,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Employees</h5>
+                        <p class="card-text">Manage employee information.</p>
+                        <a href="routes/employees/view.php" class="btn btn-primary">View Employees</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Reports</h5>
                         <p class="card-text">View various reports.</p>
-                        <a href="reports_new.php" class="btn btn-primary">View Reports</a>
+                        <a href="/Database-Project/reports.php" class="btn btn-primary">View Reports</a>
                     </div>
                 </div>
             </div>

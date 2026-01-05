@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Member {
-    private $pdo;
+    public $pdo;
 
     public function __construct() {
         global $pdo;
@@ -31,8 +31,26 @@ class Member {
     }
 
     public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM member WHERE member_id = ?");
-        return $stmt->execute([$id]);
+        try {
+            // Delete related class_member rows
+            $stmt1 = $this->pdo->prepare("DELETE FROM class_member WHERE member_id = ?");
+            $stmt1->execute([$id]);
+
+            // Delete related program_member rows
+            $stmt2 = $this->pdo->prepare("DELETE FROM program_member WHERE member_id = ?");
+            $stmt2->execute([$id]);
+
+            // Delete related payment rows
+            $stmt3 = $this->pdo->prepare("DELETE FROM payment WHERE member_id = ?");
+            $stmt3->execute([$id]);
+
+            // Now delete the member
+            $stmt = $this->pdo->prepare("DELETE FROM member WHERE member_id = ?");
+            return $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            // Optionally, log $e->getMessage()
+            return false;
+        }
     }
 
     // Additional method for member stats

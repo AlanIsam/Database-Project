@@ -2,22 +2,86 @@
 require_once '../../models/Member.php';
 
 $member = new Member();
-$id = $_GET['id'];
+
+$id = isset($_GET['id']) ? $_GET['id'] : (isset($_POST['delete_member_id']) ? $_POST['delete_member_id'] : null);
+
+function send_json($data) {
+    header('Content-Type: application/json');
+    echo json_encode($data);
+    exit;
+}
+
+function get_related_tables($pdo, $memberId) {
+    $stmt = $pdo->prepare(
+        "SELECT kcu.TABLE_NAME, kcu.COLUMN_NAME
+         FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+         WHERE kcu.REFERENCED_TABLE_SCHEMA = DATABASE()
+           AND kcu.REFERENCED_TABLE_NAME = 'member'
+           AND kcu.REFERENCED_COLUMN_NAME = 'member_id'"
+    );
+    $stmt->execute();
+    $refs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $related = [];
+    foreach ($refs as $ref) {
+        $table = $ref['TABLE_NAME'];
+        $col = $ref['COLUMN_NAME'];
+        $sql = "SELECT COUNT(*) FROM `{$table}` WHERE `{$col}` = ?";
+        $countStmt = $pdo->prepare($sql);
+        $countStmt->execute([$memberId]);
+        if ($countStmt->fetchColumn() > 0) {
+            $related[] = $table;
+        }
+    }
+    return $related;
+}
+
+// AJAX: fetch related tables
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'related') {
+    $memberId = isset($_GET['id']) ? $_GET['id'] : null;
+    if (!$memberId) {
+        send_json(['success' => false, 'error' => 'Missing member id']);
+    }
+    $related = get_related_tables($member->pdo, $memberId);
+    send_json(['success' => true, 'related' => $related]);
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // If AJAX request (from modal), return JSON
+    if (isset($_POST['delete_member_id'])) {
+        header('Content-Type: application/json');
+        $deleteId = $_POST['delete_member_id'];
+        $result = $member->delete($deleteId);
+        if ($result) {
+            echo json_encode(['success' => true]);
+        } else {
+            $related = get_related_tables($member->pdo, $deleteId);
+            if (!empty($related)) {
+                $error = 'Failed to delete member. This member is still referenced in the following tables: <ul><li>' . implode('</li><li>', $related) . '</li></ul>Please remove related records first.';
+            } else {
+                $error = 'Failed to delete member due to unknown related records.';
+            }
+            echo json_encode(['success' => false, 'error' => $error]);
+        }
+        exit;
+    }
+    // Fallback: normal POST (from direct page)
     if ($member->delete($id)) {
         header('Location: view.php');
     } else {
-        $error = 'Failed to delete member.';
+        $related = get_related_tables($member->pdo, $id);
+        if (!empty($related)) {
+            $error = 'Failed to delete member. This member is still referenced in the following tables: <ul><li>' . implode('</li><li>', $related) . '</li></ul>Please remove related records first.';
+        } else {
+            $error = 'Failed to delete member due to unknown related records.';
+        }
     }
 }
 
 $data = $member->getById($id);
 
-include '../../views/header.php';
 ?>
 <h2>Delete Member</h2>
-<p>Are you sure you want to delete <?php echo $data['first_name'] . ' ' . $data['last_name']; ?>?</p>
+<p>Are you sure you want to delete <?php echo $data['member_name']; ?>?</p>
 <?php if (isset($error)): ?>
 <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>
