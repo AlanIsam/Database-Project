@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'end_time' => $_POST['end_time'],
         'room_number' => $_POST['room_number'],
         'program_id' => $_POST['program_id'],
-        'employee_id' => $_POST['employee_id']
+        'employee_id' => $_POST['employee_id'],
+        'class_status' => $_POST['class_status']
     ];
     if ($classModel->update($id, $updateData)) {
         header('Location: view.php');
@@ -67,6 +68,15 @@ include '../../views/header.php';
     <div class="mb-3">
         <label for="room_number" class="form-label">Room Number</label>
         <input type="text" class="form-control" id="room_number" name="room_number" value="<?php echo $data['room_number']; ?>">
+    </div>
+    <div class="mb-3">
+        <label for="class_status" class="form-label">Status</label>
+        <select class="form-control" id="class_status" name="class_status" required>
+            <option value="">Select Status</option>
+            <option value="Active" <?php echo ($data['class_status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+            <option value="Completed" <?php echo ($data['class_status'] == 'Completed') ? 'selected' : ''; ?>>Completed</option>
+            <option value="Cancelled" <?php echo ($data['class_status'] == 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
     <a href="view.php" class="btn btn-secondary">Cancel</a>
