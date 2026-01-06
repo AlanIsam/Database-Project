@@ -54,6 +54,7 @@ include 'views/header.php';
             <th>Start Time</th>
             <th>End Time</th>
             <th>Room</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -66,6 +67,23 @@ include 'views/header.php';
             <td><?php echo $c['start_time']; ?></td>
             <td><?php echo $c['end_time']; ?></td>
             <td><?php echo $c['room_number']; ?></td>
+            <td>
+                <?php 
+                $status = $c['dynamic_status'];
+                $badgeClass = 'bg-secondary'; // Default gray
+
+                if ($status == 'Active') {
+                    $badgeClass = 'bg-success'; // Green
+                } elseif ($status == 'Cancelled') {
+                    $badgeClass = 'bg-danger'; // Red
+                } elseif ($status == 'Completed') {
+                    $badgeClass = 'bg-primary'; // Blue
+                }
+                ?>
+                <span class="badge <?php echo $badgeClass; ?>">
+                    <?php echo $status; ?>
+                </span>
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
@@ -79,13 +97,25 @@ include 'views/header.php';
         <tr>
             <th>Trainer</th>
             <th>Total Classes Taught</th>
-        </tr>
+            <th>Total Cancelled</th> </tr>
     </thead>
     <tbody>
         <?php foreach ($performances as $p): ?>
         <tr>
             <td><?php echo $p['employee_name']; ?></td>
-            <td><?php echo $p['total_classes']; ?></td>
+            
+            <td><?php echo $p['total_taught']; ?></td>
+            
+            <td>
+                <?php 
+                $cancelled = $p['total_cancelled'];
+                if($cancelled > 0) {
+                    echo '<span class="text-danger font-weight-bold">' . $cancelled . '</span>';
+                } else {
+                    echo $cancelled;
+                }
+                ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
