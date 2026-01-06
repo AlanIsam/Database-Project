@@ -18,6 +18,7 @@ include '../../views/header.php';
             <th>Start Time</th>
             <th>End Time</th>
             <th>Room</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -32,6 +33,24 @@ include '../../views/header.php';
             <td><?php echo $c['start_time']; ?></td>
             <td><?php echo $c['end_time']; ?></td>
             <td><?php echo $c['room_number']; ?></td>
+            <td>
+            <?php 
+            $status = $c['dynamic_status'];
+
+            $badgeClass = 'bg-secondary'; 
+
+            if ($status === 'Active') {
+                $badgeClass = 'bg-success'; // Green
+            } elseif ($status === 'Cancelled') {
+                $badgeClass = 'bg-danger'; // Red
+            } elseif ($status === 'Completed') {
+                $badgeClass = 'bg-primary'; // Blue
+            }
+            ?>
+            <span class="badge <?php echo $badgeClass; ?>">
+                <?php echo $status; ?>
+            </span>
+        </td>
             <td>
                 <a href="edit.php?id=<?php echo $c['class_id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-class-id="<?php echo $c['class_id']; ?>" data-class-name="<?php echo htmlspecialchars($c['program_name']); ?>">Delete</button>
