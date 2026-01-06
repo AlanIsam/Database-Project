@@ -21,15 +21,19 @@ class Trainer {
     }
 
     public function getPerformanceReport() {
-        $stmt = $this->pdo->query("
-            SELECT e.employee_name, COUNT(c.class_id) AS total_classes
-            FROM trainer t
-            JOIN employee e ON t.employee_id = e.employee_id
-            LEFT JOIN class c ON t.employee_id = c.employee_id
-            GROUP BY e.employee_name
-            ORDER BY total_classes DESC
-        ");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+            $sql = "SELECT 
+                        e.employee_name, 
+                        COUNT(c.class_id) AS total_scheduled,
+                        SUM(CASE WHEN c.class_status != 'Cancelled' THEN 1 ELSE 0 END) AS total_taught,
+                        SUM(CASE WHEN c.class_status = 'Cancelled' THEN 1 ELSE 0 END) AS total_cancelled
+                    FROM trainer t
+                    JOIN employee e ON t.employee_id = e.employee_id
+                    LEFT JOIN class c ON t.employee_id = c.employee_id
+                    GROUP BY e.employee_id, e.employee_name
+                    ORDER BY total_taught DESC";
+
+            $stmt = $this->pdo->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
 }
 ?>
