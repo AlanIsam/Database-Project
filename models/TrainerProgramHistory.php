@@ -14,7 +14,7 @@ class TrainerProgramHistory {
             SELECT tph.*, e.employee_name, pc.category_name
             FROM trainer_program_history tph
             JOIN employee e ON tph.employee_id = e.employee_id
-            JOIN program_category pc ON tph.category_id = pc.category_id
+            JOIN program_category pc ON tph.program_category = pc.category_name
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -24,7 +24,7 @@ class TrainerProgramHistory {
             SELECT tph.*, e.employee_name, pc.category_name
             FROM trainer_program_history tph
             JOIN employee e ON tph.employee_id = e.employee_id
-            JOIN program_category pc ON tph.category_id = pc.category_id
+            JOIN program_category pc ON tph.program_category = pc.category_name
             WHERE tph.history_id = ?
         ");
         $stmt->execute([$id]);
@@ -32,13 +32,13 @@ class TrainerProgramHistory {
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO trainer_program_history (employee_id, category_id, start_date, end_date) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$data['employee_id'], $data['category_id'], $data['start_date'], $data['end_date']]);
+        $stmt = $this->pdo->prepare("INSERT INTO trainer_program_history (employee_id, program_category, start_date, end_date) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$data['employee_id'], $data['program_category'], $data['start_date'], $data['end_date']]);
     }
 
     public function update($id, $data) {
-        $stmt = $this->pdo->prepare("UPDATE trainer_program_history SET employee_id = ?, category_id = ?, start_date = ?, end_date = ? WHERE history_id = ?");
-        return $stmt->execute([$data['employee_id'], $data['category_id'], $data['start_date'], $data['end_date'], $id]);
+        $stmt = $this->pdo->prepare("UPDATE trainer_program_history SET employee_id = ?, program_category = ?, start_date = ?, end_date = ? WHERE history_id = ?");
+        return $stmt->execute([$data['employee_id'], $data['program_category'], $data['start_date'], $data['end_date'], $id]);
     }
 
     public function delete($id) {

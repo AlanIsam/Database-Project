@@ -107,20 +107,22 @@ CREATE TABLE `class` (
   `end_time` time DEFAULT NULL,
   `room_number` varchar(10) DEFAULT NULL,
   `program_id` int(11) NOT NULL,
-  `employee_id` int(11) NOT NULL
+  `employee_id` int(11) NOT NULL,
+  `class_status` varchar(20) DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `class`
 --
 
-INSERT INTO `class` (`class_id`, `class_date`, `start_time`, `end_time`, `room_number`, `program_id`, `employee_id`) VALUES
-(3001, '2025-11-24', '18:00:00', '19:00:00', 'Room 1', 203, 103),
-(3002, '2025-11-25', '09:00:00', '10:00:00', 'Room 2', 202, 105),
-(3003, '2025-11-26', '12:00:00', '13:00:00', 'Room 1', 205, 107),
-(3004, '2025-11-27', '17:30:00', '18:30:00', 'Room 1', 203, 103),
-(3005, '2025-11-28', '10:30:00', '11:30:00', 'Room 2', 206, 109),
-(3006, '2025-11-29', '08:00:00', '09:00:00', 'Room 2', 202, 105);
+INSERT INTO `class` (`class_id`, `class_date`, `start_time`, `end_time`, `room_number`, `program_id`, `employee_id`, `class_status`) VALUES
+(3001, '2025-11-24', '18:00:00', '19:00:00', 'Room 1', 203, 103, 'Active'),
+(3002, '2025-11-25', '09:00:00', '10:00:00', 'Room 2', 202, 105, 'Active'),
+(3003, '2025-11-26', '12:00:00', '13:00:00', 'Room 1', 205, 107, 'Active'),
+(3004, '2025-11-27', '17:30:00', '18:30:00', 'Room 1', 203, 103, 'Active'),
+(3005, '2025-11-28', '10:30:00', '11:30:00', 'Room 2', 206, 109, 'Active'),
+(3006, '2025-11-29', '08:00:00', '09:00:00', 'Room 2', 202, 105, 'Completed'),
+(3007, '2026-01-07', '06:45:00', '19:45:00', 'Room 2', 202, 103, 'Completed');
 
 -- --------------------------------------------------------
 
@@ -188,8 +190,8 @@ INSERT INTO `employee` (`employee_id`, `employee_name`, `employee_ic`, `employee
 CREATE TABLE `member` (
   `member_id` int(11) NOT NULL,
   `member_name` varchar(100) NOT NULL,
-  `member_ic` VARCHAR(12) NOT NULL,
-  `member_contact` VARCHAR(20) NOT NULL,
+  `member_ic` varchar(20) NOT NULL,
+  `member_contact` varchar(30) NOT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `membership_status` varchar(20) DEFAULT NULL,
@@ -264,6 +266,7 @@ INSERT INTO `payment` (`payment_id`, `payment_date`, `payment_amount`, `payment_
 CREATE TABLE `program` (
   `program_id` int(11) NOT NULL,
   `program_name` varchar(100) NOT NULL,
+  `program_category` varchar(50) DEFAULT NULL,
   `program_duration` varchar(50) DEFAULT NULL,
   `program_fee` decimal(10,2) DEFAULT NULL,
   `employee_id` int(11) NOT NULL,
@@ -274,13 +277,13 @@ CREATE TABLE `program` (
 -- Dumping data for table `program`
 --
 
-INSERT INTO `program` (`program_id`, `program_name`, `program_duration`, `program_fee`, `employee_id`, `category_id`) VALUES
-(201, 'Beginner Weight Loss', '12 Weeks', 1200.00, 101, 1),
-(202, 'Morning Yoga Flow', '60 Minutes', 30.00, 105, 2),
-(203, 'Evening HIIT', '45 Minutes', 25.00, 103, 2),
-(204, 'Advanced Strength', '16 Weeks', 1500.00, 101, 1),
-(205, 'Zumba Fitness', '60 Minutes', 20.00, 107, 2),
-(206, 'Core and Stability', '45 Minutes', 35.00, 109, NULL);
+INSERT INTO `program` (`program_id`, `program_name`, `program_category`, `program_duration`, `program_fee`, `employee_id`, `category_id`) VALUES
+(201, 'Beginner Weight Loss', 'Personal Training', '12 Weeks', 1200.00, 101, 1),
+(202, 'Morning Yoga Flow', 'Group Class', '60 Minutes', 30.00, 105, 2),
+(203, 'Evening HIIT', 'Group Class', '45 Minutes', 25.00, 103, 2),
+(204, 'Advanced Strength', 'Personal Training', '16 Weeks', 1500.00, 101, 1),
+(205, 'Zumba Fitness', 'Group Class', '60 Minutes', 20.00, 107, 2),
+(206, 'Core and Stability', 'Group Class', '45 Minutes', 35.00, 109, NULL);
 
 -- --------------------------------------------------------
 
@@ -380,7 +383,7 @@ INSERT INTO `trainer_certification` (`employee_id`, `cert_id`) VALUES
 CREATE TABLE `trainer_program_history` (
   `history_id` int(11) NOT NULL,
   `employee_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `program_category` varchar(50) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -389,10 +392,10 @@ CREATE TABLE `trainer_program_history` (
 -- Dumping data for table `trainer_program_history`
 --
 
-INSERT INTO `trainer_program_history` (`history_id`, `employee_id`, `category_id`, `start_date`, `end_date`) VALUES
-(1, 101, 1, '2023-01-15', '2024-01-15'),
-(2, 103, 2, '2022-08-01', NULL),
-(3, 105, 2, '2024-01-01', NULL);
+INSERT INTO `trainer_program_history` (`history_id`, `employee_id`, `program_category`, `start_date`, `end_date`) VALUES
+(1, 101, 'Personal Training', '2023-01-15', '2024-01-15'),
+(2, 103, 'Group Class', '2022-08-01', NULL),
+(3, 105, 'Group Class', '2024-01-01', NULL);
 
 --
 -- Indexes for dumped tables
@@ -494,7 +497,6 @@ ALTER TABLE `trainer_certification`
 --
 ALTER TABLE `trainer_program_history`
   ADD PRIMARY KEY (`history_id`),
-  ADD KEY `fk_history_category` (`category_id`),
   ADD KEY `fk_history_trainer` (`employee_id`);
 
 --
@@ -511,7 +513,7 @@ ALTER TABLE `certification`
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3007;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3008;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -547,7 +549,7 @@ ALTER TABLE `program`
 -- AUTO_INCREMENT for table `program_category`
 --
 ALTER TABLE `program_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `trainer_program_history`
@@ -623,8 +625,7 @@ ALTER TABLE `trainer_certification`
 -- Constraints for table `trainer_program_history`
 --
 ALTER TABLE `trainer_program_history`
-  ADD CONSTRAINT `fk_history_trainer` FOREIGN KEY (`employee_id`) REFERENCES `trainer` (`employee_id`),
-  ADD CONSTRAINT `fk_history_category` FOREIGN KEY (`category_id`) REFERENCES `program_category` (`category_id`);
+  ADD CONSTRAINT `fk_history_trainer` FOREIGN KEY (`employee_id`) REFERENCES `trainer` (`employee_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

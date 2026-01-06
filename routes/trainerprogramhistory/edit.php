@@ -14,7 +14,7 @@ $data = $history->getById($id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $updateData = [
         'employee_id' => $_POST['employee_id'],
-        'category_id' => $_POST['category_id'],
+        'program_category' => $_POST['program_category'],
         'start_date' => $_POST['start_date'],
         'end_date' => $_POST['end_date']
     ];
@@ -42,11 +42,11 @@ include '../../views/header.php';
         </select>
     </div>
     <div class="mb-3">
-        <label for="category_id" class="form-label">Category</label>
-        <select class="form-control" id="category_id" name="category_id" required>
+        <label for="program_category" class="form-label">Category</label>
+        <select class="form-control" id="program_category" name="program_category" required>
             <option value="">Select Category</option>
             <?php foreach ($categories as $c): ?>
-            <option value="<?php echo $c['category_id']; ?>" <?php echo ($c['category_id'] == $data['category_id']) ? 'selected' : ''; ?>><?php echo $c['category_name']; ?></option>
+            <option value="<?php echo $c['category_name']; ?>" <?php echo ($c['category_name'] == $data['program_category']) ? 'selected' : ''; ?>><?php echo $c['category_name']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>
