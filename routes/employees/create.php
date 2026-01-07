@@ -87,7 +87,7 @@ include '../../views/header.php';
     <div class="mb-3">
         <label for="employee_type" class="form-label">Type</label>
         <select class="form-control" id="employee_type" name="employee_type" required>
-            <option value="">Select Trainer</option>
+            <option value="">Select Type</option>
             <option value="C">Cashier</option>
             <option value="T">Trainer</option>
         </select>
